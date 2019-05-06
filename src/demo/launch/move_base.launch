@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Arguments -->
+  <arg name="cmd_vel_topic" default="/cmd_vel_mux/input/teleop" />
+  <arg name="odom_frame" default="odom" />
+  <arg name="policy_map"    default="map" />
+
+  <!-- move_base node -->
+  <!-- 
+      - action_name = "move_base"
+  -->
+  
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base_myTurtlebot" output="screen" launch-prefix="xterm -e">
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+    <rosparam file="$(find demo)/config/move_base/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find demo)/config/move_base/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find demo)/config/move_base/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find demo)/config/move_base/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find demo)/config/move_base/move_base_params.yaml" command="load" />
+    <rosparam file="$(find demo)/config/move_base/dwa_local_planner_params.yaml" command="load" />
+    <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
+    <remap from="odom" to="$(arg odom_frame)"/>
+    <remap from="map" to="$(arg policy_map)" />
+  </node>
+</launch>

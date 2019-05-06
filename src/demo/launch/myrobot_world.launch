@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    
+    <arg name="world" default="$(find demo)/worlds/my_lab.world" />
+    
+	<include file="$(find turtlebot_my_extra)/launch/turtlebot_hokuyo.launch" >
+		<arg name="world_file"	value="$(arg world)" />
+	</include>
+    
+</launch>
+
+

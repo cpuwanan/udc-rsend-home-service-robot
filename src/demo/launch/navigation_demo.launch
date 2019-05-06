@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    
+    <arg name="delay_move_base"     default="3.0" /> 
+    	
+    <arg name="map_name"	default="my_lab" />
+	<arg name="laser_topic"	default="hokuyo_scan" />
+	<arg name="odom_frame"	default="odom" />
+    
+    <include file="$(find turtlebot_teleop)/launch/keyboard_teleop.launch" />
+
+    <!-- Run the map server -->
+    <arg name="map_file" default="$(find demo)/maps/$(arg map_name).yaml"/>
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+    
+    <!--- Run AMCL -->
+    <include file="$(find demo)/launch/amcl.launch">
+      <arg name="set_scan_topic"  value="$(arg laser_topic)" />
+      <arg name="set_fixed_frame"  value="$(arg odom_frame)" />
+    </include>
+    
+    <!-- Run MoveBase -->
+    <node name="timed_roslaunch_moveBase" pkg="timed_roslaunch" type="timed_roslaunch.sh" 
+        args="$(arg delay_move_base) demo move_base.launch" 
+        output="screen"/>
+    
+</launch>
+

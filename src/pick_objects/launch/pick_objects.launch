@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+    <node name="pick_objects" pkg="pick_objects" type="pick_objects" output="screen">
+        <param name="awaiting_interval_time"    value="5.0" />
+        <param name="action_name"    value="move_base" />
+        <param name="goal_pose_frame"    value="map" />
+        <param name="map_topic"    value="/map" />
+    </node>
+
+</launch>
+

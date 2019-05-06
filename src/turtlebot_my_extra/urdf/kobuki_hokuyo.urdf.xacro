@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!--
+    - Base      : kobuki
+    - Stacks    : hexagons
+    - 3d Sensor : kinect
+-->    
+<robot name="turtlebot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find turtlebot_description)/urdf/turtlebot_common_library.urdf.xacro" />
+  <xacro:include filename="$(find kobuki_description)/urdf/kobuki.urdf.xacro" />
+  <xacro:include filename="$(find turtlebot_description)/urdf/stacks/hexagons.urdf.xacro"/>
+  <xacro:include filename="$(find turtlebot_description)/urdf/sensors/kinect.urdf.xacro"/>
+
+  <kobuki/>
+  <stack_hexagons parent="base_link"/>
+  <sensor_kinect  parent="base_link"/>
+
+  <!--
+  #################################################
+        link = hokuyo
+  #################################################
+  -->  
+
+  <xacro:include filename="$(find turtlebot_my_extra)/urdf/properties.gazebo"/>
+
+  <xacro:property name="hokuyo_pos_xyz" value="0.0 0.0 0.038" />
+  <xacro:property name="hokuyo_pos_rpy" value="0.0 0.0 0.0" />
+
+  <!-- option = plate_top_link, plate_middle_link, plate_bottom_link -->
+  <xacro:property name="hokuyo_parent"	value="plate_top_link" />
+
+  <joint type="fixed" name="hokuyo_joint">
+    <origin xyz="${hokuyo_pos_xyz}" rpy="${hokuyo_pos_rpy}"/>
+    <child link="hokuyo"/>
+    <parent link="${hokuyo_parent}"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name='hokuyo'>
+    <pose>0 0 0 0 0 0</pose>
+
+    <inertial>
+      <mass value="1e-5"/>
+      <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
+      <inertia
+          ixx="0.1" ixy="0" ixz="0"
+          iyy="0.1" iyz="0"
+          izz="0.1"
+      />
+    </inertial>
+
+    <collision>
+      <origin xyz="0 0 0" rpy=" 0 0 0"/> 
+      <geometry>
+        <box size="0.1 0.1 0.1" />
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy=" 0 0 0"/>
+      <geometry>
+        <mesh filename="package://turtlebot_my_extra/meshes/hokuyo.dae" />
+      </geometry>
+    </visual>
+  </link>
+
+</robot>
